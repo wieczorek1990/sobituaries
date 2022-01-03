@@ -54,3 +54,14 @@ Deploy to production:
 * create configuration (look into `/docker compose.yml` and `/Dockerfile`)
     * generate envs (look into `/envs/`)
     * generate Django secret with `pwgen -sy 50 1`
+
+## Management
+
+Managing application:
+
+```bash
+docker compose up
+docker compose exec django bash
+./manage.py createsuperuser
+./manage.py collectstatic
+```
