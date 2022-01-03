@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt
 COPY . /srv/
 # Edit project name below
 WORKDIR /srv/sobituaries/
-# Edit project name below
 CMD ../bin/wait postgres --\
- python manage.py migrate &&\
- uwsgi --http 0.0.0.0:8000 --wsgi-file sobituaries/wsgi.py --master --processes 32 --threads 8
+ python manage.py collectstatic --noinput &&\
+ cp /srv/favicon.ico static/ &&\
+ python manage.py runserver

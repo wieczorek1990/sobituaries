@@ -16,13 +16,15 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import static
 from django.contrib import admin
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path
+from django.views.generic import base
 from rest_framework import routers
-
 
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    path('favicon.ico', base.RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
     path('admin/', admin.site.urls),
 ]
 urlpatterns += router.urls

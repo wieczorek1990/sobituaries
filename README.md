@@ -35,6 +35,14 @@ psql -h postgres -U postgres  # password is postgres
 CREATE DATABASE sobituaries WITH OWNER postgres ENCODING 'utf-8';
 ```
 
+Running migrations:
+
+```bash
+docker compose up
+docker compose exec django bash
+./manage.py migrate
+```
+
 Now run `docker compose up` again for backend to start without failure.
 
 ## Tests
@@ -64,4 +72,10 @@ docker compose up
 docker compose exec django bash
 ./manage.py createsuperuser
 ./manage.py collectstatic
+```
+
+## Favicon generation
+
+```bash
+convert -background none favicon.svg -define icon:auto-resize favicon.ico
 ```
