@@ -1,14 +1,24 @@
-FROM python:3
-RUN apt-get update &&\
- apt-get install -y postgresql-client &&\
- rm -rf /var/lib/apt/lists/*
+# DEBIAN
+# FROM python:3.10.1
+# RUN apt-get update &&\
+#  apt-get install -y postgresql-client &&\
+#  rm -rf /var/lib/apt/lists/*
+
+# ALPINE
+FROM python:3.10.1-alpine3.15
+RUN apk add bash postgresql-client &&\
+ rm -rf /var/cache/apk/*
+
+ARG PROJECT_NAME
 ENV PYTHONUNBUFFERED 1
+
 WORKDIR /srv/
-ADD requirements.txt /srv/
+ADD requirements.txt ./
 RUN pip install -r requirements.txt
-COPY . /srv/
-# Edit project name below
-WORKDIR /srv/sobituaries/
+
+COPY . ./
+
+WORKDIR /srv/$PROJECT_NAME/
 CMD ../bin/wait postgres --\
  python manage.py collectstatic --noinput &&\
  cp /srv/favicon.ico static/ &&\

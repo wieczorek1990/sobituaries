@@ -2,7 +2,10 @@ version: "3.8"
 
 services:
   django:
-    build: .
+    build:
+      context: .
+      args:
+        - PROJECT_NAME=sobituaries
     depends_on:
       - postgres
     env_file:
