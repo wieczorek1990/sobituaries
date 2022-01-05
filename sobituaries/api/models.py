@@ -8,7 +8,7 @@ class CemeteryRegister(django_extensions_models.TimeStampedModel,
                        models.Model):
     title = models.CharField(_('title'), max_length=255)
     description = models.TextField(_('description'), blank=True)
-    slug = fields.AutoSlugField(_('slug'), populate_from='title', blank=False)
+    slug = fields.AutoSlugField(_('slug'), populate_from='title', blank=False, unique=True)
 
     def __str__(self):
         return self.title
