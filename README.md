@@ -72,6 +72,8 @@ docker compose up
 docker compose exec django bash
 ./manage.py createsuperuser
 ./manage.py collectstatic
+./manage.py dumpdata --format=yaml api.CemeteryRegister > api/fixtures/CemeteryRegister.yaml
+./manage.py loaddata CemeteryRegister
 ```
 
 ## Favicon generation

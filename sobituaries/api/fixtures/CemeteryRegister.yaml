@@ -1,0 +1,16 @@
+- model: api.cemeteryregister
+  pk: 1
+  fields:
+    created: 2022-01-05 10:24:19.300249+00:00
+    modified: 2022-01-05 10:24:19.300265+00:00
+    title: Parafia Św. Wawrzyńca
+    description: Rejestr cmentarny dla cmentarza parafialnego i komunalnego w Pniewach.
+    slug: parafia-sw-wawrzynca
+- model: api.cemeteryregister
+  pk: 2
+  fields:
+    created: 2022-01-05 10:26:42.550492+00:00
+    modified: 2022-01-05 10:26:42.550506+00:00
+    title: Miasto Poznań
+    description: Rejestr dla cmenatarza na Ogrodach i Junikowie.
+    slug: miasto-poznan

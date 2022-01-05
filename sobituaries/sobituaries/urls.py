@@ -21,11 +21,15 @@ from django.urls import path
 from django.views.generic import base
 from rest_framework import routers
 
+from api import views
+
+
 router = routers.DefaultRouter()
 
 urlpatterns = [
     path('favicon.ico', base.RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
     path('admin/', admin.site.urls),
+    path('api/cemetery-registers/', views.CemeteryRegisterView.as_view(), name='cemetery-registers'),
 ]
 urlpatterns += router.urls
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

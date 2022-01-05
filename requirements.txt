@@ -1,8 +1,8 @@
 Django
 djangorestframework
 django-extensions
-django-filter
 dj-database-url
 flake8
 mock
 psycopg2-binary
+pyyaml
