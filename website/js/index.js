@@ -11,6 +11,7 @@ jQuery(document).ready(function() {
             let $element = jQuery(`#${name}`);
             if (elementData != null) {
                 $element.removeClass('d-none');
+                $element.unbind();
                 $element.click(function() {
                     jQuery.get(elementData, function(data) {
                         processResults(data);
@@ -50,11 +51,19 @@ jQuery(document).ready(function() {
             assignPageHref('previous', data);
         };
 
-        jQuery('#cemetery-registers-button').click(function() {
+        function runSearch() {
             let search = jQuery('#cemetery-registers-search').val()
             jQuery.get(`${apiRoot}/cemetery-registers/?search=${search}`, function(data) {
                 processResults(data);
             })
+        }
+
+        $cemeteryRegistersButton = jQuery('#cemetery-registers-button');
+        $cemeteryRegistersButton.click(runSearch);
+        $(document).on('keypress',function(e) {
+            if(e.which == 13) {
+                runSearch();
+            }
         });
     });
 });

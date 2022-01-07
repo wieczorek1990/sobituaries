@@ -14,3 +14,11 @@
     title: Miasto Poznań
     description: Rejestr dla cmenatarza na Ogrodach i Junikowie.
     slug: miasto-poznan
+- model: api.cemeteryregister
+  pk: 3
+  fields:
+    created: 2022-01-05 10:26:43.550492+00:00
+    modified: 2022-01-05 10:26:43.550506+00:00
+    title: Wiliczyna
+    description: Rejestr dla cmenatarza na Wilczynie.
+    slug: wilczyna
