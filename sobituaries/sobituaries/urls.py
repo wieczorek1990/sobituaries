@@ -32,7 +32,7 @@ urlpatterns = [
     path('api/cemetery-registers/',
          views.CemeteryRegisterListCreateView.as_view(),
          name='cemetery-registers'),
-    path('api/cemetery-registers/<slug:slug>',
+    path('api/cemetery-registers/<slug:slug>/',
          views.CemeteryRegisterRetrieveView.as_view(),
          name='cemetery-register-retrieve'),
 ]

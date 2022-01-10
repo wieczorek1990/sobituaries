@@ -25,7 +25,10 @@ a:visited {
     display: inline;
 }
 .form-entity {
-    margin: 5px;
+    margin: 4px;
+}
+.red {
+    color: #dc322f;
 }
 
 #website-title {
