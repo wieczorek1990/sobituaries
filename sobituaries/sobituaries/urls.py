@@ -29,7 +29,12 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('favicon.ico', base.RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
     path('admin/', admin.site.urls),
-    path('api/cemetery-registers/', views.CemeteryRegisterView.as_view(), name='cemetery-registers'),
+    path('api/cemetery-registers/',
+         views.CemeteryRegisterListCreateView.as_view(),
+         name='cemetery-registers'),
+    path('api/cemetery-registers/<slug:slug>',
+         views.CemeteryRegisterRetrieveView.as_view(),
+         name='cemetery-register-retrieve'),
 ]
 urlpatterns += router.urls
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
