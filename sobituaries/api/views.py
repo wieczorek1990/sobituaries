@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views import generic
@@ -68,8 +69,15 @@ class ObituaryNoticeTemplateView(generic.TemplateView):
                                             cemetery_register=cemetery_register_id,
                                             slug=obituary_notice_slug)
 
+        if not settings.DEBUG:
+            page_root = self.request.META.get('HTTP_REFERER')
+        else:
+            page_root = settings.IJT_URL
+
         context.update({
+            'page_root': page_root,
             'title': obituary_notice.clean_name(),
+            'cemetery_register_slug': cemetery_register_slug,
             'obituary_notice': obituary_notice,
             'BODY': models.ObituaryNotice.BodyOrAshes.BODY,
             'ASHES': models.ObituaryNotice.BodyOrAshes.ASHES,
