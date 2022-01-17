@@ -1,0 +1,36 @@
+- model: api.obituarynotice
+  pk: 1
+  fields:
+    created: 2022-01-17 09:23:48.867920+00:00
+    modified: 2022-01-17 09:23:48.867936+00:00
+    cemetery_register: 1
+    death_date: 2022-01-17
+    titles: kochany Mąż, nasz Ojciec, Syn, Brat, Szwagier i Wujek
+    first_name: Radosław
+    last_name: Nowak
+    years_lived: 82
+    holy_mass_datetime: 2022-01-20 12:00:00+00:00
+    holy_mass_place: kościele Św. Wawrzyńca w Pniewach
+    rosary_time: '11:30:00'
+    rosary_place: w kościele
+    body_or_ashes: body
+    funeral_place: na cmentarzu parafialnym
+    slug: radosaw-nowak-mgrr
+- model: api.obituarynotice
+  pk: 2
+  fields:
+    created: 2022-01-17 09:24:55.470819+00:00
+    modified: 2022-01-17 09:24:55.470833+00:00
+    cemetery_register: 1
+    death_date: 2022-01-17
+    titles: kochany Mąż, nasz Ojciec, Syn, Brat, Szwagier i Wujek
+    first_name: Adam
+    last_name: Nowak
+    years_lived: 83
+    holy_mass_datetime: 2022-01-16 12:00:00+00:00
+    holy_mass_place: kościele Św. Wawrzyńca w Pniewach
+    rosary_time: '11:30:00'
+    rosary_place: w kaplicy
+    body_or_ashes: ashes
+    funeral_place: na cmentarzu parafialnym
+    slug: adam-nowak-mofw

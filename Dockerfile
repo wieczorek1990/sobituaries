@@ -22,4 +22,4 @@ WORKDIR /srv/$PROJECT_NAME/
 CMD ../bin/wait postgres --\
  python manage.py collectstatic --noinput &&\
  cp /srv/favicon.ico static/ &&\
- python manage.py runserver 0.0.0.0:8000
+ python manage.py runserver 0.0.0.0:8000 --insecure

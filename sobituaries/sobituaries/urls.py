@@ -35,6 +35,12 @@ urlpatterns = [
     path('api/cemetery-registers/<slug:slug>/',
          views.CemeteryRegisterRetrieveView.as_view(),
          name='cemetery-register-retrieve'),
+    path('api/cemetery-registers/<slug:slug>/obituary-notices/',
+         views.ObituaryNoticeListCreateView.as_view(),
+         name='obituary-notices'),
+    path('api/cemetery-registers/<slug:cemetery_register_slug>/obituary-notices/<slug:obituary_notice_slug>/',
+         views.ObituaryNoticeTemplateView.as_view(),
+         name='obituary-notice-retrieve')
 ]
 urlpatterns += router.urls
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

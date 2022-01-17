@@ -1,0 +1,32 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nekrologi @ Soiree — {% block title %}{% endblock %}</title>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" rel="stylesheet">
+    <link href="{% static 'api/css/base.css' %}" rel="stylesheet">
+    <style>
+      {% block style %}{% endblock %}
+    </style>
+  </head>
+  <body>
+    <div class="table">
+      <div class="cell center-both">
+        <main role="main">
+          <h1 id="website-title">Nekrologi @ Soiree</h1>
+            {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span id="footer-span" class="highlight"><i>Czas ucieka, wieczność czeka.</i></span>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'api/js/index.js' %}"></script>
+  </body>
+</html>
