@@ -54,3 +54,12 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
 
     def clean_name(self):
         return f'{self.first_name} {self.last_name}'
+
+
+class CemeteryRegisterCleanup(django_extensions_models.TimeStampedModel):
+    def save(self, **kwargs):
+        (CemeteryRegister.objects
+         .annotate(obituary_notices_count=models.Count('obituary_notices'))
+         .filter(obituary_notices_count=0)
+         .delete())
+        return super().save(**kwargs)
