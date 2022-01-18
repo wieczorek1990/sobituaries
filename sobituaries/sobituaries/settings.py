@@ -123,9 +123,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -163,7 +163,7 @@ CORS_ALLOWED_ORIGINS = [
 
 # Routing back links
 
-IJT_URL = ('http://localhost:63342/'
+IJ_URL = ('http://localhost:63342/'
            'sobituaries/website/index.html'
            '?_ijt=fd1r4257ake3l3iql8f1nvbava'
            '&_ij_reload=RELOAD_ON_SAVE')

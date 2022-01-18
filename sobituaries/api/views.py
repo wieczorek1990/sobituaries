@@ -72,7 +72,7 @@ class ObituaryNoticeTemplateView(generic.TemplateView):
         if not settings.DEBUG:
             page_root = self.request.META.get('HTTP_REFERER')
         else:
-            page_root = settings.IJT_URL
+            page_root = settings.IJ_URL
 
         context.update({
             'page_root': page_root,
