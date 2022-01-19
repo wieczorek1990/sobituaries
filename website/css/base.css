@@ -10,6 +10,12 @@ body {
 a:visited {
     color: #93a1a1;
 }
+input, textarea, select {
+    padding: 10px;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
+}
 
 .footer {
     position: absolute;
@@ -37,12 +43,6 @@ a:visited {
 #footer-span {
     display: flex;
     justify-content: center;
-}
-#cemetery-registers-search {
-    padding: 10px;
-    border: 0;
-    border-radius: 8px;
-    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
 }
 
 /* Button ala Dribbble */

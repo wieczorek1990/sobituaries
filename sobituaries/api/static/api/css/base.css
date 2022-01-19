@@ -1,3 +1,5 @@
+/* Copied from /website/css/base.css with unused rules removed. */
+
 /* Site rules */
 * {
     font-family: 'Source Code Pro', sans-serif;
@@ -18,18 +20,6 @@ a:visited {
     height: 60px;
     line-height: 60px;
 }
-.d-none {
-    display: none;
-}
-.form-group {
-    display: inline;
-}
-.form-entity {
-    margin: 4px;
-}
-.red {
-    color: #dc322f;
-}
 
 #website-title {
     font-size: 3em;
@@ -37,34 +27,6 @@ a:visited {
 #footer-span {
     display: flex;
     justify-content: center;
-}
-#cemetery-registers-search {
-    padding: 10px;
-    border: 0;
-    border-radius: 8px;
-    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
-}
-
-/* Button ala Dribbble */
-.btn {
-    background-color: rgba(51, 51, 51, 0.05);
-    border-radius: 8px;
-    border-width: 0;
-    color: #586e75;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    list-style: none;
-    margin: 0;
-    padding: 10px 12px;
-    text-align: center;
-    transition: all 200ms;
-    vertical-align: baseline;
-    white-space: nowrap;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
 }
 
 /* Common rules */
