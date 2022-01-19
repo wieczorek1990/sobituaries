@@ -10,6 +10,15 @@
 .cross {
     font-size: 4rem;
 }
+#outer {
+    width: 50%;
+    margin: 0 auto;
+}
+#obituary-notice {
+    border-style: double;
+    border-width: thick;
+    width: fit-content;
+}
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock %}
@@ -23,23 +32,28 @@
 {% block content %}
 {% with obituary_notice as on %}
 <div id="obituary-notice-site">
-    Z głębokim żalem zawiadamiamy, że w dniu {{ on.death_date|date:'d.m.Y' }} r. zmarł<br/>
-    {{ on.titles }}.<br/>
-    <span class="cross">✟</span><br/>
-    <span class="h2">Ś. P.</span><br/>
-    <span class="h1">{{ on.clean_name }}</span><br/>
-    <span class="h2">Lat {{ on.years_lived }}</span><br/>
-    Msza święta pogrzebowa zostanie odprawiona {{ on.holy_mass_datetime.date|date:'d.m.Y' }} r.
-    o godzinie {{ on.holy_mass_datetime|date:'H:i' }}<br/>
-    {{ on.holy_mass_place }}.<br/>
-    Różaniec o godzinie {{ on.rosary_time|date:'H:i' }} {{ on.rosary_place }}.<br/>
-    Następnie
-    {% if on.body_or_ashes == BODY %}
-    ciało
-    {% elif on.body_or_ashes == ASHES %}
-    urnę z prochami
-    {% endif %}
-    złożymy {{ on.funeral_place }}.<br/>
+    <div id="outer">
+        <div id="obituary-notice">
+            Z głębokim żalem zawiadamiamy, że w dniu {{ on.death_date|date:'d.m.Y' }} r. zmarł<br/>
+            {{ on.titles }}.<br/>
+            <span class="cross">✟</span><br/>
+            <span class="h2">Ś. P.</span><br/>
+            <span class="h1">{{ on.clean_name }}</span><br/>
+            <span class="h2">Lat {{ on.years_lived }}</span><br/>
+            Msza święta pogrzebowa zostanie odprawiona {{ on.holy_mass_datetime.date|date:'d.m.Y' }} r.
+            o godzinie {{ on.holy_mass_datetime|date:'H:i' }}<br/>
+            {{ on.holy_mass_place }}.<br/>
+            Różaniec o godzinie {{ on.rosary_time|date:'H:i' }} {{ on.rosary_place }}.<br/>
+            Następnie
+            {% if on.body_or_ashes == BODY %}
+            ciało
+            {% elif on.body_or_ashes == ASHES %}
+            urnę z prochami
+            {% endif %}
+            złożymy {{ on.funeral_place }}.<br/>
+        </div>
+    </div>
+    <br/>
     <a href="{{ page_root }}#/cemetery-registers/{{ cemetery_register_slug }}/">⏎</a>
 </div>
 {% endwith %}

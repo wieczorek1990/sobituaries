@@ -41,12 +41,19 @@
           <div id="create-site" class="d-none">
             <div id="cemetery-register-create-form">
               <div class="form-group">
-                <label for="cemetery-register-title" class="form-entity">Tytuł:</label>
-                <input id="cemetery-register-title" name="title" class="form-entity">
+                <div class="tooltip">
+                  <label for="cemetery-register-title" class="form-entity">Tytuł:</label>
+                  <input id="cemetery-register-title" name="title" class="form-entity">
+                  <span id="cemetery-register-tooltip-title" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="cemetery-register-description" class="form-entity">Opis:</label>
-                <textarea id="cemetery-register-description" name="description" class="form-entity" rows="4"></textarea>
+                <div class="tooltip">
+                  <label for="cemetery-register-description" class="form-entity">Opis:</label>
+                  <textarea id="cemetery-register-description" name="description" class="form-entity" rows="4"></textarea>
+                  <span id="cemetery-register-tooltip-description" class="tooltiptext d-none"></span>
+                </div>
               </div>
+              <br/>
               <br/>
               <button id="cemetery-register-create-button" class="btn form-entity">Stwórz</button>
             </div>
@@ -130,6 +137,7 @@
                   <span id="obituary-notice-tooltip-funeral-place" class="tooltiptext d-none"></span>
                 </div>
               </div>
+              <br/>
               <br/>
               <button id="obituary-notice-create-button" class="btn form-entity">Stwórz</button>
             </div>

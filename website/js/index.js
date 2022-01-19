@@ -11,6 +11,22 @@ jQuery(document).ready(function() {
             return '<p>Nic nie znaleziono!</p>'
         }
 
+        function activateTooltips(xhr, prefix) {
+            if (xhr.status == 400) {
+                if (debug) {
+                    console.log(xhr.responseJSON);
+                }
+                jQuery('div.tooltip > span.tooltiptext').addClass('d-none');
+                for (const [fieldName, errors] of Object.entries(xhr.responseJSON)) {
+                    let name = fieldName.replaceAll('_', '-');
+                    let selector = `#${prefix}-${name}`;
+                    let $tooltip = jQuery(selector);
+                    $tooltip.text(errors.join(' '));
+                    $tooltip.removeClass('d-none');
+                }
+            }
+        }
+
         function assignPageHref(prefix, name, callback, data, secondData) {
             let elementData = data[name];
             let $element = jQuery(`#${prefix}-${name}`);
@@ -74,7 +90,8 @@ jQuery(document).ready(function() {
                 jQuery('#cemetery-register-create-form').addClass('d-none');
                 jQuery('#cemetery-register-create-success').removeClass('d-none');
                 jQuery('#cemetery-register-create-failure').addClass('d-none');
-            }).fail(function() {
+            }).fail(function(xhr) {
+                activateTooltips(xhr, 'cemetery-register-tooltip');
                 jQuery('#cemetery-register-create-failure').removeClass('d-none');
             });
         }
@@ -254,19 +271,8 @@ jQuery(document).ready(function() {
                     jQuery('#obituary-notice-create-form').addClass('d-none');
                     jQuery('#obituary-notice-create-success').removeClass('d-none');
                     jQuery('#obituary-notice-create-failure').addClass('d-none');
-                }).fail(function(xhr, status, error) {
-                    if (xhr.status == 400) {
-                        if (debug) {
-                            console.log(xhr.responseJSON);
-                        }
-                        for (const [fieldName, errors] of Object.entries(xhr.responseJSON)) {
-                            let name = fieldName.replaceAll('_', '-');
-                            let selector = `#obituary-notice-tooltip-${name}`;
-                            let $tooltip = jQuery(selector);
-                            $tooltip.text(errors.join(' '));
-                            $tooltip.removeClass('d-none');
-                        }
-                    }
+                }).fail(function(xhr) {
+                    activateTooltips(xhr, 'obituary-notice-tooltip');
                     jQuery('#obituary-notice-create-failure').removeClass('d-none');
                 });
             }
