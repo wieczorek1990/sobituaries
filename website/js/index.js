@@ -18,8 +18,7 @@ jQuery(document).ready(function() {
             if (elementData != null) {
                 $element.removeClass('d-none');
 
-                $element.unbind();
-                $element.click(function() {
+                $element.unbind().click(function() {
                     jQuery.get(elementData, function(fetchedData) {
                         callback(fetchedData, secondData);
                     });
@@ -65,7 +64,7 @@ jQuery(document).ready(function() {
             });
         }
 
-        function runCreate() {
+        function runCreateCemeteryRegister() {
             let title = jQuery('#cemetery-register-title').val();
             let description = jQuery('#cemetery-register-description').val();
             jQuery.post(`${apiRoot}/cemetery-registers/`, {
@@ -86,7 +85,7 @@ jQuery(document).ready(function() {
                 runSearch();
             }
         });
-        jQuery('#cemetery-register-create-button').click(runCreate);
+        jQuery('#cemetery-register-create-button').click(runCreateCemeteryRegister);
 
         // Without it first usage is not triggered
         if (window.location.hash == undefined) {
@@ -188,6 +187,83 @@ jQuery(document).ready(function() {
             jQuery('#retrieve-site').addClass('d-none');
             jQuery('#create-site').addClass('d-none');
             jQuery('#obituary-notice-create-site').removeClass('d-none');
+
+            let slug = params['slug'];
+
+            let datepickerConfig = {
+                dateFormat: 'yy-mm-dd',
+            };
+            jQuery('#obituary-notice-death-date').datepicker(datepickerConfig);
+            jQuery('#obituary-notice-holy-mass-date').datepicker(datepickerConfig);
+            let timepickerConfig = {
+                timeFormat: 'H:mm',
+                interval: 15,
+                minTime: '6',
+                maxTime: '22',
+                defaultTime: '',
+                startTime: '6:00',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true,
+            };
+            jQuery('#obituary-notice-holy-mass-time').timepicker(timepickerConfig);
+            timepickerConfig['interval'] = 5;
+            jQuery('#obituary-notice-rosary-time').timepicker(timepickerConfig);
+
+            function runCreateObituaryNotice() {
+                let deathDate = jQuery('#obituary-notice-death-date').val();
+                let titles = jQuery('#obituary-notice-titles').val();
+                let firstName = jQuery('#obituary-notice-first-name').val();
+                let lastName = jQuery('#obituary-notice-last-name').val();
+                let yearsLived = jQuery('#obituary-notice-years-lived').val();
+
+                let holyMassDatetime;
+                try {
+                    let holyMassDate = jQuery('#obituary-notice-holy-mass-date').datepicker('getDate');
+                    let holyMassTime = jQuery('#obituary-notice-holy-mass-time').val();
+                    let splitTime = holyMassTime.split(':');
+                    let hours = Number.parseInt(splitTime[0]);
+                    let minutes = Number.parseInt(splitTime[1]);
+                    holyMassDate.setHours(hours, minutes, 0);
+                    holyMassDatetime = holyMassDate.toJSON();
+                } catch (error) {
+                    if (error instanceof TypeError) {
+                        holyMassDatetime = null;
+                    }
+                }
+
+                let holyMassPlace = jQuery('#obituary-notice-holy-mass-place').val();
+                let rosaryTime = jQuery('#obituary-notice-rosary-time').val();
+                let rosaryPlace = jQuery('#obituary-notice-rosary-place').val();
+                let bodyOrAshes = jQuery('#obituary-notice-body-or-ashes').val();
+                let funeralPlace = jQuery('#obituary-notice-funeral-place').val();
+
+                jQuery.post(`${apiRoot}/cemetery-registers/${slug}/obituary-notices/`, {
+                    'death_date': deathDate,
+                    'titles': titles,
+                    'first_name': firstName,
+                    'last_name': lastName,
+                    'years_lived': yearsLived,
+                    'holy_mass_datetime': holyMassDatetime,
+                    'holy_mass_place': holyMassPlace,
+                    'rosary_time': rosaryTime,
+                    'rosary_place': rosaryPlace,
+                    'body_or_ashes': bodyOrAshes,
+                    'funeral_place': funeralPlace,
+                }).done(function() {
+                    jQuery('#obituary-notice-create-form').addClass('d-none');
+                    jQuery('#obituary-notice-create-success').removeClass('d-none');
+                    jQuery('#obituary-notice-create-failure').addClass('d-none');
+                }).fail(function(xhr, status, error) {
+                    if (xhr.status == 400) {
+                        console.log(xhr.responseJSON);
+                    }
+                    jQuery('#obituary-notice-create-failure').removeClass('d-none');
+                });
+            }
+
+            $obituaryNoticeCreateButton = jQuery('#obituary-notice-create-button');
+            $obituaryNoticeCreateButton.unbind().click(runCreateObituaryNotice);
         }
 
         function hashChange() {
@@ -198,7 +274,7 @@ jQuery(document).ready(function() {
                 'obituary-notice-create': [
                     'cemetery-registers/(?<slug>[\\w-]+)/obituary-notices/', createObituaryNotice
                 ],
-            }
+            };
 
             for (const [hashName, hashRoute] of Object.entries(config)) {
                 let hashRegex = '^#/' + hashRoute[0] + '$';
@@ -221,22 +297,5 @@ jQuery(document).ready(function() {
         }
 
         jQuery(window).on('hashchange', hashChange);
-
-        jQuery('#obituary-notice-death-date').datepicker();
-        jQuery('#obituary-notice-holy-mass-date').datepicker();
-        let timepickerConfig = {
-            timeFormat: 'H:mm',
-            interval: 15,
-            minTime: '6',
-            maxTime: '22',
-            defaultTime: '',
-            startTime: '6:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true
-        };
-        jQuery('#obituary-notice-holy-mass-time').timepicker(timepickerConfig);
-        timepickerConfig['interval'] = 5;
-        jQuery('#obituary-notice-rosary-time').timepicker(timepickerConfig);
     });
 });
