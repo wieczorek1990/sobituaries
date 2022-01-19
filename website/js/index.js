@@ -267,10 +267,15 @@ jQuery(document).ready(function() {
                     'rosary_place': rosaryPlace,
                     'body_or_ashes': bodyOrAshes,
                     'funeral_place': funeralPlace,
-                }).done(function() {
+                }).done(function(data) {
                     jQuery('#obituary-notice-create-form').addClass('d-none');
                     jQuery('#obituary-notice-create-success').removeClass('d-none');
                     jQuery('#obituary-notice-create-failure').addClass('d-none');
+
+                    jQuery('#obituary-notice-create-url').removeClass('d-none');
+                    let obituaryNoticeSlug = data['slug'];
+                    let url = `${apiRoot}/cemetery-registers/${slug}/obituary-notices/${obituaryNoticeSlug}/`;
+                    jQuery('#obituary-notice-create-anchor').attr('href', url)
                 }).fail(function(xhr) {
                     activateTooltips(xhr, 'obituary-notice-tooltip');
                     jQuery('#obituary-notice-create-failure').removeClass('d-none');
