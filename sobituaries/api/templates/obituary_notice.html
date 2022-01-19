@@ -31,7 +31,7 @@
     <span class="h2">Lat {{ on.years_lived }}</span><br/>
     Msza święta pogrzebowa zostanie odprawiona {{ on.holy_mass_datetime.date|date:'d.m.Y' }} r.
     o godzinie {{ on.holy_mass_datetime|date:'H:i' }}<br/>
-    w {{ on.holy_mass_place }}.<br/>
+    {{ on.holy_mass_place }}.<br/>
     Różaniec o godzinie {{ on.rosary_time|date:'H:i' }} {{ on.rosary_place }}.<br/>
     Następnie
     {% if on.body_or_ashes == BODY %}

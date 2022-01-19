@@ -221,5 +221,22 @@ jQuery(document).ready(function() {
         }
 
         jQuery(window).on('hashchange', hashChange);
+
+        jQuery('#obituary-notice-death-date').datepicker();
+        jQuery('#obituary-notice-holy-mass-date').datepicker();
+        let timepickerConfig = {
+            timeFormat: 'H:mm',
+            interval: 15,
+            minTime: '6',
+            maxTime: '22',
+            defaultTime: '',
+            startTime: '6:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        };
+        jQuery('#obituary-notice-holy-mass-time').timepicker(timepickerConfig);
+        timepickerConfig['interval'] = 5;
+        jQuery('#obituary-notice-rosary-time').timepicker(timepickerConfig);
     });
 });
