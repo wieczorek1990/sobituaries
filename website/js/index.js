@@ -229,7 +229,11 @@ jQuery(document).ready(function() {
 
             function runCreateObituaryNotice() {
                 let deathDate = jQuery('#obituary-notice-death-date').val();
-                let titles = jQuery('#obituary-notice-titles').val();
+
+                let titles = jQuery('div#obituary-notice-titles > input[type=checkbox]:checked').map(function(){
+                    return jQuery(this).next().text();
+                }).get().join(", ");
+
                 let firstName = jQuery('#obituary-notice-first-name').val();
                 let lastName = jQuery('#obituary-notice-last-name').val();
                 let yearsLived = jQuery('#obituary-notice-years-lived').val();
