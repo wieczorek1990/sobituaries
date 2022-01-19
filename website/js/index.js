@@ -256,7 +256,16 @@ jQuery(document).ready(function() {
                     jQuery('#obituary-notice-create-failure').addClass('d-none');
                 }).fail(function(xhr, status, error) {
                     if (xhr.status == 400) {
-                        console.log(xhr.responseJSON);
+                        if (debug) {
+                            console.log(xhr.responseJSON);
+                        }
+                        for (const [fieldName, errors] of Object.entries(xhr.responseJSON)) {
+                            let name = fieldName.replaceAll('_', '-');
+                            let selector = `#obituary-notice-tooltip-${name}`;
+                            let $tooltip = jQuery(selector);
+                            $tooltip.text(errors.join(' '));
+                            $tooltip.removeClass('d-none');
+                        }
                     }
                     jQuery('#obituary-notice-create-failure').removeClass('d-none');
                 });

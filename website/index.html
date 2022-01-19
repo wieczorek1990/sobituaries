@@ -58,44 +58,77 @@
           <div id="obituary-notice-create-site" class="d-none">
             <div id="obituary-notice-create-form">
               <div class="form-group">
-                <label for="obituary-notice-death-date" class="form-entity">Data śmierci:</label>
-                <input id="obituary-notice-death-date" name="death_date" class="form-entity">
+                <div class="tooltip">
+                  <label for="obituary-notice-death-date" class="form-entity">Data śmierci:</label>
+                  <input id="obituary-notice-death-date" name="death_date" class="form-entity">
+                  <span id="obituary-notice-tooltip-death-date" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-titles" class="form-entity">Tytuły:</label>
-                <input id="obituary-notice-titles" name="titles" class="form-entity" placeholder="Mąż, Ojciec, Syn, Brat, Szwagier i Wujek" size="42">
+                <div class="tooltip">
+                  <label for="obituary-notice-titles" class="form-entity">Tytuły:</label>
+                  <input id="obituary-notice-titles" name="titles" class="form-entity" placeholder="Mąż, Ojciec, Syn, Brat, Szwagier i Wujek" size="42">
+                  <span id="obituary-notice-tooltip-titles" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-first-name" class="form-entity">Imię:</label>
-                <input id="obituary-notice-first-name" name="first_name" class="form-entity">
+                <div class="tooltip">
+                  <label for="obituary-notice-first-name" class="form-entity">Imię:</label>
+                  <input id="obituary-notice-first-name" name="first_name" class="form-entity">
+                  <span id="obituary-notice-tooltip-first-name" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-last-name" class="form-entity">Nazwisko:</label>
-                <input id="obituary-notice-last-name" name="last_name" class="form-entity">
+                <div class="tooltip">
+                  <label for="obituary-notice-last-name" class="form-entity">Nazwisko:</label>
+                  <input id="obituary-notice-last-name" name="last_name" class="form-entity">
+                  <span id="obituary-notice-tooltip-last-name" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-years-lived" class="form-entity">Lata życia:</label>
-                <input id="obituary-notice-years-lived" name="years_lived" class="form-entity" type="number" min="0">
+                <div class="tooltip">
+                  <label for="obituary-notice-years-lived" class="form-entity">Lata życia:</label>
+                  <input id="obituary-notice-years-lived" name="years_lived" class="form-entity" type="number" min="0">
+                  <span id="obituary-notice-tooltip-years-lived" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-holy-mass-date" class="form-entity">Data mszy pogrzebowej:</label>
-                <input id="obituary-notice-holy-mass-date" name="holy_mass_date" class="form-entity">
+                <div class="tooltip">
+                  <label for="obituary-notice-holy-mass-date" class="form-entity">Data mszy pogrzebowej:</label>
+                  <input id="obituary-notice-holy-mass-date" name="holy_mass_date" class="form-entity">
+                  <br/>
+                  <label for="obituary-notice-holy-mass-time" class="form-entity">Godzina mszy pogrzebowej:</label>
+                  <input id="obituary-notice-holy-mass-time" name="holy_mass_time" class="form-entity">
+                  <span id="obituary-notice-tooltip-holy-mass-datetime" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-holy-mass-time" class="form-entity">Godzina mszy pogrzebowej:</label>
-                <input id="obituary-notice-holy-mass-time" name="holy_mass_time" class="form-entity">
+                <div class="tooltip">
+                  <label for="obituary-notice-holy-mass-place" class="form-entity">Miejsce mszy pogrzebowej:</label>
+                  <input id="obituary-notice-holy-mass-place" name="holy_mass_place" class="form-entity" placeholder="w kościele Św. Wawrzyńca w Pniewach" size="38">
+                  <span id="obituary-notice-tooltip-holy-mass-place" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-holy-mass-place" class="form-entity">Miejsce mszy pogrzebowej:</label>
-                <input id="obituary-notice-holy-mass-place" name="holy_mass_place" class="form-entity" placeholder="w kościele Św. Wawrzyńca w Pniewach" size="38">
+                <div class="tooltip">
+                  <label for="obituary-notice-rosary-time" class="form-entity">Godzina różańca:</label>
+                  <input id="obituary-notice-rosary-time" name="rosary_time" class="form-entity">
+                  <span id="obituary-notice-tooltip-rosary-time" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-rosary-time" class="form-entity">Godzina różańca:</label>
-                <input id="obituary-notice-rosary-time" name="rosary_time" class="form-entity">
+                <div class="tooltip">
+                  <label for="obituary-notice-rosary-place" class="form-entity">Miejsce różańca:</label>
+                  <input id="obituary-notice-rosary-place" name="rosary_place" class="form-entity" placeholder="w kościele">
+                  <span id="obituary-notice-tooltip-rosary-place" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-rosary-place" class="form-entity">Miejsce różańca:</label>
-                <input id="obituary-notice-rosary-place" name="rosary_place" class="form-entity" placeholder="w kościele">
+                <div class="tooltip">
+                  <label for="obituary-notice-body-or-ashes">Ciało/Urna z prochami:</label>
+                  <select name="body_or_ashes" id="obituary-notice-body-or-ashes">
+                      <option value="body">Ciało</option>
+                      <option value="ashes">Urna z prochami</option>
+                  </select>
+                  <span id="obituary-notice-tooltip-body-or-ashes" class="tooltiptext d-none"></span>
+                </div>
                 <br/>
-                <label for="obituary-notice-body-or-ashes">Ciało/Urna z prochami:</label>
-                <select name="body_or_ashes" id="obituary-notice-body-or-ashes">
-                    <option value="body">Ciało</option>
-                    <option value="ashes">Urna z prochami</option>
-                </select>
-                <br/>
-                <label for="obituary-notice-funeral-place" class="form-entity">Miejsce pogrzebu:</label>
-                <input id="obituary-notice-funeral-place" name="funeral_place" class="form-entity" placeholder="na cmentarzu parafialnym" size="24">
+                <div class="tooltip">
+                  <label for="obituary-notice-funeral-place" class="form-entity">Miejsce pogrzebu:</label>
+                  <input id="obituary-notice-funeral-place" name="funeral_place" class="form-entity" placeholder="na cmentarzu parafialnym" size="24">
+                  <span id="obituary-notice-tooltip-funeral-place" class="tooltiptext d-none"></span>
+                </div>
               </div>
               <br/>
               <button id="obituary-notice-create-button" class="btn form-entity">Stwórz</button>
