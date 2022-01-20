@@ -13,3 +13,9 @@ class ObituaryNoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ObituaryNotice
         fields = '__all__'
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Report
+        fields = '__all__'

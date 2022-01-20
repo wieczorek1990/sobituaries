@@ -35,8 +35,6 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
         BODY = 'body', _('Body')
         ASHES = 'ashes', _('Ashes')
 
-    cemetery_register = models.ForeignKey(CemeteryRegister, on_delete=models.CASCADE, related_name='obituary_notices')
-
     death_date = models.DateField(_('death date'))
     titles = models.CharField(_('titles'), max_length=constants.CHAR_FIELD_MAX_LENGTH)
     first_name = models.CharField(_('first name'), max_length=constants.CHAR_FIELD_MAX_LENGTH)
@@ -50,6 +48,7 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
                                      choices=BodyOrAshes.choices)
     funeral_place = models.CharField(_('funeral place'), max_length=constants.CHAR_FIELD_MAX_LENGTH)
 
+    cemetery_register = models.ForeignKey(CemeteryRegister, on_delete=models.CASCADE, related_name='obituary_notices')
     paid_on = models.DateTimeField(default=None, null=True)
     slug = fields.AutoSlugField(_('slug'), populate_from='name', blank=False)
 
@@ -79,6 +78,9 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
 class CemeteryRegisterCleanup(django_extensions_models.TimeStampedModel):
     deleted = models.PositiveIntegerField()
 
+    def __str__(self):
+        return str(self.deleted)
+
     def save(self, **kwargs):
         queryset = (CemeteryRegister.objects
                                     .annotate(obituary_notices_count=models.Count('obituary_notices'))
@@ -93,6 +95,21 @@ class ObituaryNoticePayment(django_extensions_models.TimeStampedModel):
 
     token = models.CharField(_('token'), max_length=constants.PAYMENTS_TOKEN_LENGTH)
 
+    def __str__(self):
+        return str(self.obituary_notice)
+
     def save(self, **kwargs):
         self.token = utils.random_ascii_lowercase(length=constants.PAYMENTS_TOKEN_LENGTH)
         super().save(**kwargs)
+
+
+class Report(django_extensions_models.TimeStampedModel):
+    class Category(models.TextChoices):
+        CEMETERY_REGISTER = 'cemetery_register', _('Cemetery register')
+        OBITUARY_NOTICE = 'obituary_notice', _('Obituary notice')
+
+    category = models.CharField(_('category'), max_length=constants.CHAR_FIELD_MAX_LENGTH, choices=Category.choices)
+    slug = models.SlugField()
+
+    def __str__(self):
+        return f'{self.category} {self.slug}'

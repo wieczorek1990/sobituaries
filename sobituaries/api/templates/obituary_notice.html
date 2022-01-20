@@ -51,6 +51,7 @@
 
 {% block content %}
 {% with obituary_notice as on %}
+{% csrf_token %}
 <div id="obituary-notice-site">
     <div id="outer">
         <div id="obituary-notice">
@@ -74,9 +75,8 @@
         </div>
     </div>
     <br/>
-    Kopiuj link do schowka: <a id="link-copy-anchor" href="javascript:;">📋</a>
-    <br/>
-    <br/>
+    <p>Kopiuj link do schowka: <a id="link-copy-anchor" href="javascript:;">📋</a></p>
+    <p><a id="obituary-notice-report-anchor" href="javascript:;">Zgłoś nekrolog ❌</a></p>
     <a href="{{ page_root }}#/cemetery-registers/{{ cemetery_register_slug }}/">⏎</a>
 </div>
 {% endwith %}
@@ -98,6 +98,19 @@
     jQuery(document).ready(function() {
         jQuery('#link-copy-anchor').click(function() {
             navigator.clipboard.writeText(window.location.href);
+        });
+
+        let apiRoot = '{{ API_ROOT }}';
+        function report(category, slug) {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            jQuery.post(`${apiRoot}/reports/`, {
+                'category': category,
+                'slug': slug,
+                'csrfmiddlewaretoken': csrftoken,
+            }).fail(function(xhr){ console.log(xhr.responseJSON); });
+        }
+        jQuery('#obituary-notice-report-anchor').click(function() {
+            report('obituary_notice', '{{ obituary_notice_slug }}');
         });
     });
 </script>

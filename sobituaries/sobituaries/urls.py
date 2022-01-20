@@ -48,6 +48,9 @@ urlpatterns = [
          'success/<str:token>/',
          views.ObituaryNoticePaymentSuccessView.as_view(),
          name='obituary-notice-stripe-payment-success'),
+    path('api/reports/',
+         views.ReportCreateView.as_view(),
+         name='report-create'),
 ]
 urlpatterns += router.urls
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

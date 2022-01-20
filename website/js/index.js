@@ -44,6 +44,13 @@ jQuery(document).ready(function() {
             }
         }
 
+        function report(category, slug) {
+            jQuery.post(`${apiRoot}/reports/`, {
+                'category': category,
+                'slug': slug,
+            })
+        }
+
         function generateCemeteryRegister(element) {
             let slug = element['slug'];
             let url = `#/cemetery-registers/${slug}/`
@@ -190,6 +197,9 @@ jQuery(document).ready(function() {
                 jQuery.get(`${apiRoot}/cemetery-registers/${slug}/obituary-notices/`, function(obituaryNoticeData) {
                     processObituaryNotices(obituaryNoticeData, cemeteryRegisterData);
                 });
+            });
+            jQuery('#cemetery-register-report-anchor').click(function() {
+                report('cemetery_register', slug);
             });
         }
 

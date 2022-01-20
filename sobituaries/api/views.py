@@ -78,15 +78,17 @@ class ObituaryNoticeTemplateView(SlugsMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
-        cemetery_register_slug, _, cemetery_register, obituary_notice = self.get_slugs()
+        cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice = self.get_slugs()
 
         context.update({
             'page_root': settings.PAGE_ROOT,
             'title': obituary_notice.clean_name(),
             'cemetery_register_slug': cemetery_register_slug,
             'obituary_notice': obituary_notice,
+            'obituary_notice_slug': obituary_notice_slug,
             'BODY': models.ObituaryNotice.BodyOrAshes.BODY,
             'ASHES': models.ObituaryNotice.BodyOrAshes.ASHES,
+            'API_ROOT': settings.API_ROOT,
         })
 
         return context
@@ -133,3 +135,8 @@ class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
 
         return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/success/'
                                          f'{cemetery_register_slug}/{obituary_notice_slug}/')
+
+
+class ReportCreateView(generics.CreateAPIView):
+    queryset = models.Report.objects.all()
+    serializer_class = serializers.ReportSerializer
