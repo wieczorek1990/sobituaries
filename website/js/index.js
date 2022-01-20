@@ -61,10 +61,10 @@ jQuery(document).ready(function() {
         }
 
         function processCemeteryRegisters(data) {
-            jQuery('#results-title').removeClass('d-none');
+            jQuery('#cemetery-register-results-title').removeClass('d-none');
             jQuery('#cemetery-register-create').removeClass('d-none');
 
-            let $results = jQuery('#results');
+            let $results = jQuery('#cemetery-register-results');
             $results.empty();
 
             if (data['count'] == 0) {
@@ -119,10 +119,10 @@ jQuery(document).ready(function() {
         }
 
         function searchSite(params) {
-            jQuery('#search-site').removeClass('d-none');
-            jQuery('#retrieve-site').addClass('d-none');
-            jQuery('#create-site').addClass('d-none');
-            jQuery('#obituary-notice-create-site').addClass('d-none');
+            jQuery('#cemetery-register-search-site').removeClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').addClass('d-none');
+            jQuery('#cemetery-register-create-site').addClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').addClass('d-none');
             jQuery('#stripe-success-site').addClass('d-none');
             jQuery('#stripe-cancel-site').addClass('d-none');
             jQuery('#about-site').addClass('d-none');
@@ -158,10 +158,10 @@ jQuery(document).ready(function() {
         }
 
         function retrieveSite(params) {
-            jQuery('#search-site').addClass('d-none');
-            jQuery('#retrieve-site').removeClass('d-none');
-            jQuery('#create-site').addClass('d-none');
-            jQuery('#obituary-notice-create-site').addClass('d-none');
+            jQuery('#cemetery-register-search-site').addClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').removeClass('d-none');
+            jQuery('#cemetery-register-create-site').addClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').addClass('d-none');
             jQuery('#stripe-success-site').addClass('d-none');
             jQuery('#stripe-cancel-site').addClass('d-none');
             jQuery('#about-site').addClass('d-none');
@@ -169,7 +169,7 @@ jQuery(document).ready(function() {
             let slug = params['slug'];
 
             function processObituaryNotices(obituaryNoticeData, cemeteryRegisterData) {
-                $results = jQuery('#results-retrieve');
+                $results = jQuery('#cemetery-register-results-retrieve');
                 $results.empty()
                 $results.append(generateCemeteryRegisterRetrieve(cemeteryRegisterData));
 
@@ -204,10 +204,10 @@ jQuery(document).ready(function() {
         }
 
         function createSite(params) {
-            jQuery('#search-site').addClass('d-none');
-            jQuery('#retrieve-site').addClass('d-none');
-            jQuery('#create-site').removeClass('d-none');
-            jQuery('#obituary-notice-create-site').addClass('d-none');
+            jQuery('#cemetery-register-search-site').addClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').addClass('d-none');
+            jQuery('#cemetery-register-create-site').removeClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').addClass('d-none');
             jQuery('#stripe-success-site').addClass('d-none');
             jQuery('#stripe-cancel-site').addClass('d-none');
             jQuery('#about-site').addClass('d-none');
@@ -220,10 +220,10 @@ jQuery(document).ready(function() {
         }
 
         function createObituaryNoticeSite(params) {
-            jQuery('#search-site').addClass('d-none');
-            jQuery('#retrieve-site').addClass('d-none');
-            jQuery('#create-site').addClass('d-none');
-            jQuery('#obituary-notice-create-site').removeClass('d-none');
+            jQuery('#cemetery-register-search-site').addClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').addClass('d-none');
+            jQuery('#cemetery-register-create-site').addClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').removeClass('d-none');
             jQuery('#stripe-success-site').addClass('d-none');
             jQuery('#stripe-cancel-site').addClass('d-none');
             jQuery('#about-site').addClass('d-none');
@@ -314,10 +314,10 @@ jQuery(document).ready(function() {
         }
 
         function stripeSuccessSite(params) {
-            jQuery('#search-site').addClass('d-none');
-            jQuery('#retrieve-site').addClass('d-none');
-            jQuery('#create-site').addClass('d-none');
-            jQuery('#obituary-notice-create-site').addClass('d-none');
+            jQuery('#cemetery-register-search-site').addClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').addClass('d-none');
+            jQuery('#cemetery-register-create-site').addClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').addClass('d-none');
             jQuery('#stripe-success-site').removeClass('d-none');
             jQuery('#stripe-cancel-site').addClass('d-none');
             jQuery('#about-site').addClass('d-none');
@@ -331,20 +331,20 @@ jQuery(document).ready(function() {
         }
 
         function stripeCancelSite() {
-            jQuery('#search-site').addClass('d-none');
-            jQuery('#retrieve-site').addClass('d-none');
-            jQuery('#create-site').addClass('d-none');
-            jQuery('#obituary-notice-create-site').addClass('d-none');
+            jQuery('#cemetery-register-search-site').addClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').addClass('d-none');
+            jQuery('#cemetery-register-create-site').addClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').addClass('d-none');
             jQuery('#stripe-success-site').addClass('d-none');
             jQuery('#stripe-cancel-site').removeClass('d-none');
             jQuery('#about-site').addClass('d-none');
         }
 
         function aboutSite() {
-            jQuery('#search-site').addClass('d-none');
-            jQuery('#retrieve-site').addClass('d-none');
-            jQuery('#create-site').addClass('d-none');
-            jQuery('#obituary-notice-create-site').addClass('d-none');
+            jQuery('#cemetery-register-search-site').addClass('d-none');
+            jQuery('#cemetery-register-retrieve-site').addClass('d-none');
+            jQuery('#cemetery-register-create-site').addClass('d-none');
+            jQuery('#obituary-notice-cemetery-register-create-site').addClass('d-none');
             jQuery('#stripe-success-site').addClass('d-none');
             jQuery('#stripe-cancel-site').addClass('d-none');
             jQuery('#about-site').removeClass('d-none');
