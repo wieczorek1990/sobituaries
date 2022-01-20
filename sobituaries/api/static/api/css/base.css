@@ -6,27 +6,12 @@
     color: #657b83;
 }
 
-body {
-    margin-bottom: 60px; /* footer */
-}
 a:visited {
     color: #93a1a1;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-}
-
 #website-title {
     font-size: 3em;
-}
-#footer-span {
-    display: flex;
-    justify-content: center;
 }
 
 /* Common rules */
@@ -34,7 +19,7 @@ body {
   background-color: #fdf6e3;
   position: absolute;
   top: 0;
-  bottom: -60px;
+  bottom: 0;
   left: 0;
   right: 0;
 }
@@ -50,8 +35,4 @@ body {
 .center-both {
   vertical-align: middle;
   text-align: center;
-}
-.highlight {
-  background-color: #eee8d5;
-  transition: all ease-in-out 0.6s;
 }
