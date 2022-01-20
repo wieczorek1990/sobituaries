@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1000mm"
+   height="707mm"
+   viewBox="0 0 1000 707.00004"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+   sodipodi:docname="share.svg"
+   inkscape:export-filename="/Users/luke/Software/sobituaries/sobituaries/static/share.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     units="mm"
+     inkscape:zoom="0.74029882"
+     inkscape:cx="253.95151"
+     inkscape:cy="345.1309"
+     inkscape:window-width="1365"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Warstwa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <rect
+       style="display:inline;fill:#fdf6e3;fill-opacity:1;stroke-width:0.265192"
+       id="rect899"
+       width="317.5"
+       height="166.6875"
+       x="0"
+       y="-7.1054274e-15"
+       inkscape:export-filename="/Users/luke/Software/sobituaries/share.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Warstwa 2"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:180.622px;line-height:1.25;font-family:sans-serif;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="110.24306"
+       y="145.65305"
+       id="text1221"><tspan
+         sodipodi:role="line"
+         id="tspan1219"
+         style="font-size:180.622px;fill:#657b83;fill-opacity:1;stroke-width:0.264583"
+         x="110.24306"
+         y="145.65305">✟</tspan></text>
+  </g>
+</svg>
