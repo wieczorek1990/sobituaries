@@ -36,6 +36,9 @@ input, textarea, select {
 .red {
     color: #dc322f;
 }
+.green {
+    color: #859900;
+}
 .stretched {
     line-height: 150%;
 }
@@ -46,6 +49,10 @@ input, textarea, select {
 #footer-span {
     display: flex;
     justify-content: center;
+}
+#about-site {
+    max-width: 40%;
+    margin: 0 auto;
 }
 
 /* Button ala Dribbble */
