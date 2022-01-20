@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db import fields
 from django_extensions.db import models as django_extensions_models
@@ -18,6 +19,11 @@ class CemeteryRegister(django_extensions_models.TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+
+class ObituaryNoticeManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(paid_on__isnull=False)
 
 
 class ObituaryNotice(django_extensions_models.TimeStampedModel):
@@ -44,7 +50,11 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
                                      choices=BodyOrAshes.choices)
     funeral_place = models.CharField(_('funeral place'), max_length=constants.CHAR_FIELD_MAX_LENGTH)
 
+    paid_on = models.DateTimeField(default=None, null=True)
     slug = fields.AutoSlugField(_('slug'), populate_from='name', blank=False)
+
+    objects = models.Manager()
+    paid = ObituaryNoticeManager()
 
     def __str__(self):
         return f'{self.clean_name()} {self.slug}'
@@ -54,6 +64,10 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
 
     def clean_name(self):
         return f'{self.first_name} {self.last_name}'
+
+    def mark_paid(self):
+        self.paid_on = timezone.now()
+        self.save()
 
 
 class CemeteryRegisterCleanup(django_extensions_models.TimeStampedModel):

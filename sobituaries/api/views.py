@@ -1,12 +1,16 @@
+import stripe
+from django import http
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.views import generic
 from rest_framework import filters
 from rest_framework import generics
+from rest_framework import views
 
 from api import models
 from api import serializers
+from api import utils
 
 
 class CemeteryRegisterListCreateView(generics.ListCreateAPIView):
@@ -40,26 +44,22 @@ class ObituaryNoticeListCreateView(generics.ListCreateAPIView):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        mutable = request.data._mutable
-        request.data._mutable = True
-        request.data['cemetery_register'] = self.cemetery_register_id
-        request.data._mutable = mutable
+        def add_cemetery_register():
+            request.data['cemetery_register'] = self.cemetery_register_id
+
+        utils.access_mutable(request, add_cemetery_register)
 
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
         now = timezone.now()
-        queryset = models.ObituaryNotice.objects.filter(cemetery_register=self.cemetery_register_id,
-                                                        holy_mass_datetime__gte=now)
+        queryset = models.ObituaryNotice.paid.filter(cemetery_register=self.cemetery_register_id,
+                                                     holy_mass_datetime__gte=now)
         return queryset
 
 
-class ObituaryNoticeTemplateView(generic.TemplateView):
-    template_name = 'obituary_notice.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-
+class SlugsMixin:
+    def get_slugs(self):
         cemetery_register_slug = self.kwargs['cemetery_register_slug']
         obituary_notice_slug = self.kwargs['obituary_notice_slug']
 
@@ -69,13 +69,19 @@ class ObituaryNoticeTemplateView(generic.TemplateView):
                                             cemetery_register=cemetery_register_id,
                                             slug=obituary_notice_slug)
 
-        if not settings.DEBUG:
-            page_root = self.request.META.get('HTTP_REFERER')
-        else:
-            page_root = settings.IJ_URL
+        return cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice
+
+
+class ObituaryNoticeTemplateView(SlugsMixin, generic.TemplateView):
+    template_name = 'obituary_notice.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+
+        cemetery_register_slug, _, cemetery_register, obituary_notice = self.get_slugs()
 
         context.update({
-            'page_root': page_root,
+            'page_root': settings.PAGE_ROOT,
             'title': obituary_notice.clean_name(),
             'cemetery_register_slug': cemetery_register_slug,
             'obituary_notice': obituary_notice,
@@ -84,3 +90,37 @@ class ObituaryNoticeTemplateView(generic.TemplateView):
         })
 
         return context
+
+
+class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
+    def get(self, request, *args, **kwargs):
+        cemetery_register_slug, obituary_notice_slug, _, _ = self.get_slugs()
+
+        session = stripe.checkout.Session.create(
+            line_items=[{
+                'price_data': {
+                    'currency': 'pln',
+                    'product_data': {
+                        'name': 'obituary notice',
+                    },
+                    'unit_amount': 500,  # See Stripe spreadsheet
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=(f'{settings.API_ROOT}/'
+                         f'cemetery-registers/{cemetery_register_slug}/'
+                         f'obituary-notices/{obituary_notice_slug}/'
+                         f'payments/success/'),
+            cancel_url=f'{settings.PAGE_ROOT}#/stripe/cancel',
+        )
+
+        return redirect(session.url, code=303)
+
+
+class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
+    def get(self, request, *args, **kwargs):
+        cemetery_register_slug, obituary_notice_slug, _, obituary_notice = self.get_slugs()
+        obituary_notice.mark_paid()
+        return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/success/'
+                                         f'{cemetery_register_slug}/{obituary_notice_slug}/')

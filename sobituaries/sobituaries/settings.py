@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import stripe
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'django_filters',
     'rest_framework',
     'corsheaders',
     'api',
@@ -163,7 +163,17 @@ CORS_ALLOWED_ORIGINS = [
 
 # Routing back links
 
-IJ_URL = ('http://localhost:63342/'
-           'sobituaries/website/index.html'
-           '?_ijt=fd1r4257ake3l3iql8f1nvbava'
-           '&_ij_reload=RELOAD_ON_SAVE')
+if not DEBUG:
+    API_ROOT = 'https://nekrologi.soiree.tech/api'
+    PAGE_ROOT = 'https://nekrologi.soiree.tech'
+else:
+    # Allow unsigned requests in Build/Execution/Deployment/Built-in Server
+    API_ROOT = 'http://localhost:8000/api'
+    PAGE_ROOT = ('http://localhost:63342/'
+                 'sobituaries/website/index.html'
+                 '?_ij_reload=RELOAD_ON_SAVE')
+
+
+# Stripe
+
+stripe.api_key = os.environ.get('STRIPE_API_KEY')

@@ -36,6 +36,9 @@ input, textarea, select {
 .red {
     color: #dc322f;
 }
+.stretched {
+    line-height: 150%;
+}
 
 #website-title {
     font-size: 3em;

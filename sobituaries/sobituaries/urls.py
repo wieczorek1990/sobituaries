@@ -40,7 +40,14 @@ urlpatterns = [
          name='obituary-notices'),
     path('api/cemetery-registers/<slug:cemetery_register_slug>/obituary-notices/<slug:obituary_notice_slug>/',
          views.ObituaryNoticeTemplateView.as_view(),
-         name='obituary-notice-retrieve')
+         name='obituary-notice-retrieve'),
+    path('api/cemetery-registers/<slug:cemetery_register_slug>/obituary-notices/<slug:obituary_notice_slug>/payments/',
+         views.ObituaryNoticePaymentView.as_view(),
+         name='obituary-notice-stripe-payment'),
+    path('api/cemetery-registers/<slug:cemetery_register_slug>/obituary-notices/<slug:obituary_notice_slug>/payments/'
+         'success/',
+         views.ObituaryNoticePaymentSuccessView.as_view(),
+         name='obituary-notice-stripe-payment-success'),
 ]
 urlpatterns += router.urls
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
