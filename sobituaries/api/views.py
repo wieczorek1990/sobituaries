@@ -101,7 +101,7 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
                 'price_data': {
                     'currency': 'pln',
                     'product_data': {
-                        'name': 'obituary notice',
+                        'name': 'Nekrolog',
                     },
                     'unit_amount': 500,  # See Stripe spreadsheet
                 },

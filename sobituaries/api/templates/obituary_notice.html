@@ -21,6 +21,10 @@
     border-width: thick;
     width: fit-content;
 }
+#obituary-notice *, #obituary-notice {
+    font-family: 'Merriweather', serif;
+    line-height: 125%;
+}
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock %}
@@ -39,6 +43,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{ request.path }}" />
 <meta property="fb:app_id" content="966242223397117" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -51,7 +59,7 @@
             <span class="cross">✟</span><br/>
             <span class="h2">Ś. P.</span><br/>
             <span class="h1">{{ on.clean_name }}</span><br/>
-            <span class="h2">Lat {{ on.years_lived }}</span><br/>
+            <span class="h2">Lat {{ on.years_lived }}</span><br/><br/>
             Msza święta pogrzebowa zostanie odprawiona {{ on.holy_mass_datetime.date|date:'d.m.Y' }} r.
             o godzinie {{ on.holy_mass_datetime|date:'H:i' }}<br/>
             {{ on.holy_mass_place }}.<br/>
@@ -66,9 +74,15 @@
         </div>
     </div>
     <br/>
+    <a id="link-copy-anchor" href="javascript:;">Kopiuj link do schowka.</a>
+    <br/>
+    <br/>
     <a href="{{ page_root }}#/cemetery-registers/{{ cemetery_register_slug }}/">⏎</a>
 </div>
 {% endwith %}
+{% endblock %}
+
+{% block script %}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5659074756801631"
         crossorigin="anonymous"></script>
 <!-- Horyzontalna reklama -->
@@ -78,5 +92,13 @@
      data-ad-slot="2040956394"></ins>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<script>
+    jQuery(document).ready(function() {
+        jQuery('#link-copy-anchor').click(function() {
+            navigator.clipboard.writeText(window.location.href);
+        });
+    });
 </script>
 {% endblock %}
