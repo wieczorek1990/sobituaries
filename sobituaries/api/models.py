@@ -65,6 +65,12 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
     def clean_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    def is_unpaid(self):
+        return self.paid_on is None
+
+    def token_matches(self, token):
+        return self.payment.token == token
+
     def mark_paid(self):
         self.paid_on = timezone.now()
         self.save()
@@ -80,3 +86,13 @@ class CemeteryRegisterCleanup(django_extensions_models.TimeStampedModel):
         self.deleted = queryset.count()
         queryset.delete()
         return super().save(**kwargs)
+
+
+class ObituaryNoticePayment(django_extensions_models.TimeStampedModel):
+    obituary_notice = models.OneToOneField(ObituaryNotice, on_delete=models.CASCADE, related_name='payment')
+
+    token = models.CharField(_('token'), max_length=constants.PAYMENTS_TOKEN_LENGTH)
+
+    def save(self, **kwargs):
+        self.token = utils.random_ascii_lowercase(length=constants.PAYMENTS_TOKEN_LENGTH)
+        super().save(**kwargs)

@@ -45,7 +45,7 @@ urlpatterns = [
          views.ObituaryNoticePaymentView.as_view(),
          name='obituary-notice-stripe-payment'),
     path('api/cemetery-registers/<slug:cemetery_register_slug>/obituary-notices/<slug:obituary_notice_slug>/payments/'
-         'success/',
+         'success/<str:token>/',
          views.ObituaryNoticePaymentSuccessView.as_view(),
          name='obituary-notice-stripe-payment-success'),
 ]

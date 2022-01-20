@@ -94,7 +94,10 @@ class ObituaryNoticeTemplateView(SlugsMixin, generic.TemplateView):
 
 class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
-        cemetery_register_slug, obituary_notice_slug, _, _ = self.get_slugs()
+        cemetery_register_slug, obituary_notice_slug, _, obituary_notice = self.get_slugs()
+
+        payment = models.ObituaryNoticePayment(obituary_notice=obituary_notice)
+        payment.save()
 
         session = stripe.checkout.Session.create(
             line_items=[{
@@ -111,7 +114,7 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
             success_url=(f'{settings.API_ROOT}/'
                          f'cemetery-registers/{cemetery_register_slug}/'
                          f'obituary-notices/{obituary_notice_slug}/'
-                         f'payments/success/'),
+                         f'payments/success/{payment.token}/'),
             cancel_url=f'{settings.PAGE_ROOT}#/stripe/cancel',
         )
 
@@ -121,6 +124,12 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
 class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
         cemetery_register_slug, obituary_notice_slug, _, obituary_notice = self.get_slugs()
-        obituary_notice.mark_paid()
+
+        token = self.kwargs['token']
+        if obituary_notice.is_unpaid() and obituary_notice.token_matches(token):
+            obituary_notice.mark_paid()
+        else:
+            return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/cancel/')
+
         return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/success/'
                                          f'{cemetery_register_slug}/{obituary_notice_slug}/')
