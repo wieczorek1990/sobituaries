@@ -173,5 +173,11 @@ else:
 
 
 # Stripe
+# API keys:
+# https://dashboard.stripe.com/apikeys
+# NUMBER DESCRIPTION
+# 4242424242424242 	 Succeeds and immediately processes the payment.
+# 4000000000003220 	 3D Secure 2 authentication must be completed for a successful payment.
+# 4000000000009995 	 Always fails with a decline code of insufficient_funds.
 
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
