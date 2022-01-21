@@ -96,3 +96,9 @@ CREATE user sobituaries WITH password '{password}';
 CREATE DATABASE sobituaries WITH OWNER sobituaries ENCODING 'utf-8';
 psql -h localhost -d sobituaries -U sobituaries -W
 ```
+
+Nginx needed:
+
+```bash
+chcon -Rt httpd_sys_content_t /srv/
+```
