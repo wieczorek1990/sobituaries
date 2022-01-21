@@ -1,10 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
 host="$1"
 shift
 
+echo "Trying username = '${POSTGRES_USERNAME}' on host = '${host}'"
 until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$host" -U $POSTGRES_USERNAME -c '\l'
 do
   sleep 1
