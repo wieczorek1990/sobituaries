@@ -6,4 +6,5 @@ dj-database-url==0.5.0
 mock==4.0.3
 psycopg2-binary==2.9.3
 pyyaml==6.0
-stripe==2.64.0
+stripe==2.65.0
+daphne==3.0.2
