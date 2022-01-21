@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DJANGO_DEBUG')))
 
-ALLOWED_HOSTS = ['localhost', 'backend', 'https://nekrologi.soiree.tech']
+ALLOWED_HOSTS = ['localhost', 'backend', 'nekrologi.soiree.tech', 'https://nekrologi.soiree.tech']
 
 
 # Application definition
