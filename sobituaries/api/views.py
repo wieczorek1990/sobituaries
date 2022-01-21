@@ -1,4 +1,5 @@
 import stripe
+from braces.views import CsrfExemptMixin
 from django import http
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
@@ -13,7 +14,8 @@ from api import serializers
 from api import utils
 
 
-class CemeteryRegisterListCreateView(generics.ListCreateAPIView):
+class CemeteryRegisterListCreateView(CsrfExemptMixin, generics.ListCreateAPIView):
+    authentication_classes = []
     queryset = models.CemeteryRegister.objects.all()
     serializer_class = serializers.CemeteryRegisterSerializer
     filter_backends = (filters.SearchFilter,)
@@ -26,7 +28,8 @@ class CemeteryRegisterRetrieveView(generics.RetrieveAPIView):
     lookup_field = 'slug'
 
 
-class ObituaryNoticeListCreateView(generics.ListCreateAPIView):
+class ObituaryNoticeListCreateView(CsrfExemptMixin, generics.ListCreateAPIView):
+    authentication_classes = []
     serializer_class = serializers.ObituaryNoticeSerializer
 
     def __init__(self, **kwargs):
@@ -137,6 +140,7 @@ class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
                                          f'{cemetery_register_slug}/{obituary_notice_slug}/')
 
 
-class ReportCreateView(generics.CreateAPIView):
+class ReportCreateView(CsrfExemptMixin, generics.CreateAPIView):
+    authentication_classes = []
     queryset = models.Report.objects.all()
     serializer_class = serializers.ReportSerializer
