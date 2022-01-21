@@ -94,7 +94,7 @@ else:
             'NAME': 'sobituaries',
             'USER': os.environ.get('POSTGRES_USERNAME'),
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-            'HOST': 'postgres',
+            'HOST': os.environ.get('POSTGRES_HOST'),
             'PORT': '5432',
             'TEST': {'NAME': 'sobituaries_test'}
         }
