@@ -14,6 +14,8 @@ POSTGRES_USERNAME # username
 POSTGRES_PASSWORD # password
 ```
 
+Use [generator](https://djecrety.ir) for generating `DJANGO_SECRET_KEY`.
+
 ## Running
 
 After creating envs run:
@@ -80,4 +82,17 @@ docker compose exec django bash
 
 ```bash
 convert -background none favicon.svg -define icon:auto-resize favicon.ico
+```
+
+## Server
+
+Server is on Fedora.
+
+[PostgreSQL](https://docs.fedoraproject.org/en-US/quick-docs/postgresql/):
+
+```bash
+sudo -u postgres psql
+CREATE user sobituaries WITH password '{password}';
+CREATE DATABASE sobituaries WITH OWNER sobituaries ENCODING 'utf-8';
+psql -h localhost -d sobituaries -U sobituaries -W
 ```
