@@ -14,7 +14,9 @@ import os
 from pathlib import Path
 
 import dj_database_url
+import sentry_sdk
 import stripe
+from sentry_sdk.integrations.django import DjangoIntegration
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -181,3 +183,13 @@ else:
 # 4000000000009995 	 Always fails with a decline code of insufficient_funds.
 
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
+
+
+# Sentry
+
+sentry_sdk.init(
+    "https://0e9a3858fdff4ef59523470ba780fb0a@o1123187.ingest.sentry.io/6160853",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+    send_default_pii=False,
+)
