@@ -100,5 +100,6 @@ psql -h localhost -d sobituaries -U sobituaries -W
 Nginx needed:
 
 ```bash
-chcon -Rt httpd_sys_content_t /srv/
+chcon -Rt httpd_sys_content_t /srv/sobituaries/website/ /srv/sobituaries/sobituaries/static/
+setsebool -P httpd_can_network_connect 1
 ```
