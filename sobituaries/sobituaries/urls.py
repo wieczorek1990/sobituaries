@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path
 from django.views.generic import base
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
 from api import views
@@ -30,13 +31,13 @@ urlpatterns = [
     path('favicon.ico', base.RedirectView.as_view(url=staticfiles_storage.url('favicon.ico'))),
     path('admin/', admin.site.urls),
     path('api/cemetery-registers/',
-         views.CemeteryRegisterListCreateView.as_view(),
+         csrf_exempt(views.CemeteryRegisterListCreateView.as_view()),
          name='cemetery-registers'),
     path('api/cemetery-registers/<slug:slug>/',
          views.CemeteryRegisterRetrieveView.as_view(),
          name='cemetery-register-retrieve'),
     path('api/cemetery-registers/<slug:slug>/obituary-notices/',
-         views.ObituaryNoticeListCreateView.as_view(),
+         csrf_exempt(views.ObituaryNoticeListCreateView.as_view()),
          name='obituary-notices'),
     path('api/cemetery-registers/<slug:cemetery_register_slug>/obituary-notices/<slug:obituary_notice_slug>/',
          views.ObituaryNoticeTemplateView.as_view(),
@@ -49,7 +50,7 @@ urlpatterns = [
          views.ObituaryNoticePaymentSuccessView.as_view(),
          name='obituary-notice-stripe-payment-success'),
     path('api/reports/',
-         views.ReportCreateView.as_view(),
+         csrf_exempt(views.ReportCreateView.as_view()),
          name='report-create'),
 ]
 urlpatterns += router.urls
