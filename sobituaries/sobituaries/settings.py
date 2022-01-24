@@ -160,7 +160,7 @@ REST_FRAMEWORK = {
 # CORS
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:63342',
+    'http://localhost:8888',
 ]
 
 
@@ -172,7 +172,7 @@ if not DEBUG:
 else:
     # Allow unsigned requests in Build/Execution/Deployment/Built-in Server
     API_ROOT = 'http://localhost:8000/api'
-    PAGE_ROOT = 'http://localhost:63342/sobituaries/website/index.html?_ij_reload=RELOAD_ON_SAVE'
+    PAGE_ROOT = 'http://localhost:8888'
 
 
 # Stripe

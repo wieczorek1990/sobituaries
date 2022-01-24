@@ -26,6 +26,13 @@ docker compose up
 
 This starts with failure when database is yet not created.
 
+Running frontend:
+
+```bash
+cd website/
+python3 -m http.server 8888
+```
+
 ## Database
 
 Setting up database, e.g. for local instance:
