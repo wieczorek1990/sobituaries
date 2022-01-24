@@ -1,3 +1,5 @@
+from datetime import date, datetime, time
+
 import stripe
 from braces.views import CsrfExemptMixin
 from django import http
@@ -9,6 +11,7 @@ from rest_framework import filters
 from rest_framework import generics
 from rest_framework import views
 
+from api import constants
 from api import models
 from api import serializers
 from api import utils
@@ -62,15 +65,55 @@ class ObituaryNoticeListCreateView(CsrfExemptMixin, generics.ListCreateAPIView):
 
 
 class SlugsMixin:
-    def get_slugs(self):
+    @staticmethod
+    def get_additional_context_data():
+        return {'SAMPLE': False}
+
+    def _get_slugs(self):
         cemetery_register_slug = self.kwargs['cemetery_register_slug']
         obituary_notice_slug = self.kwargs['obituary_notice_slug']
+        return cemetery_register_slug, obituary_notice_slug
+
+    def get_slugs(self):
+        cemetery_register_slug, obituary_notice_slug = self._get_slugs()
 
         cemetery_register = get_object_or_404(models.CemeteryRegister, slug=cemetery_register_slug)
         cemetery_register_id = cemetery_register.id
         obituary_notice = get_object_or_404(models.ObituaryNotice,
                                             cemetery_register=cemetery_register_id,
                                             slug=obituary_notice_slug)
+
+        return cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice
+
+
+class SampleSlugsMixin:
+    @staticmethod
+    def get_additional_context_data():
+        return {'SAMPLE': True}
+
+    def get_slugs(self):
+        cemetery_register_slug, obituary_notice_slug = self._get_slugs()
+
+        cemetery_register = models.CemeteryRegister(
+            title='Przykładowy rejestr nekrologów',
+            description='To jest przykładowy rejestr nekrologów.',
+            slug=cemetery_register_slug
+        )
+        obituary_notice = models.ObituaryNotice(
+            death_date=date(2022, 1, 24),
+            titles='Mąż, Ojciec, Dziadek',
+            first_name='Adam',
+            last_name='Nowak',
+            years_lived=85,
+            holy_mass_datetime=datetime(2022, 1, 24, 12, 0, 0, 0),
+            holy_mass_place='w kościele Św. Wawrzyńca w Pniewach',
+            rosary_time=time(11, 30, 0, 0),
+            rosary_place='w kościele',
+            body_or_ashes='body',
+            funeral_place='na cmentarzu parafialnym',
+            paid_on=datetime(2022, 1, 24, 0, 0, 0, 0),
+            slug=obituary_notice_slug,
+        )
 
         return cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice
 
@@ -93,8 +136,13 @@ class ObituaryNoticeTemplateView(SlugsMixin, generic.TemplateView):
             'ASHES': models.ObituaryNotice.BodyOrAshes.ASHES,
             'API_ROOT': settings.API_ROOT,
         })
+        context.update(self.get_additional_context_data())
 
         return context
+
+
+class ObituaryNoticeSampleTemplateView(SampleSlugsMixin, ObituaryNoticeTemplateView):
+    pass
 
 
 class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
@@ -109,9 +157,9 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
                 'price_data': {
                     'currency': 'pln',
                     'product_data': {
-                        'name': 'Nekrolog',
+                        'name': constants.SERVICE_NAME,
                     },
-                    'unit_amount': 500,  # See Stripe spreadsheet
+                    'unit_amount': constants.SERVICE_PRICE,
                 },
                 'quantity': 1,
             }],

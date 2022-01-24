@@ -75,12 +75,14 @@
         </div>
     </div>
     <p>Kopiuj link do schowka: <a id="link-copy-anchor" href="javascript:;">📋</a></p>
+    {% if not SAMPLE %}
     <div class="popup">
         <a id="obituary-notice-report-anchor" href="javascript:;">Zgłoś nekrolog ❌</a>
         <span class="popuptext" id="obituary-notice-report-popup">Zgłoszono!</span>
     </div>
     <br/>
     <p><a href="{{ page_root }}#/cemetery-registers/{{ cemetery_register_slug }}/">⏎</a></p>
+    {% endif %}
 </div>
 {% endwith %}
 {% endblock %}

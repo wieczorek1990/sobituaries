@@ -169,7 +169,6 @@ jQuery(document).ready(function() {
                 if (obituaryNoticeData['count'] == 0) {
                     $results.append(generateEmptyResponse());
                 } else {
-                    console.log(obituaryNoticeData);
                     let results = obituaryNoticeData['results']
                     results.forEach(function(element) {
                         $results.append(generateObituaryNotice(slug, element));
@@ -177,9 +176,11 @@ jQuery(document).ready(function() {
                 }
 
                 assignPageHref('obituary-notice', 'next',
-                    processObituaryNotices, obituaryNoticeData, cemeteryRegisterData);
+                    processObituaryNotices, obituaryNoticeData, cemeteryRegisterData
+                );
                 assignPageHref('obituary-notice', 'previous',
-                    processObituaryNotices, obituaryNoticeData, cemeteryRegisterData);
+                    processObituaryNotices, obituaryNoticeData, cemeteryRegisterData
+                );
             }
 
             jQuery.get(`${apiRoot}/cemetery-registers/${slug}/`, function(cemeteryRegisterData) {
@@ -297,7 +298,11 @@ jQuery(document).ready(function() {
 
         function stripeCancelSite() {}
 
-        function aboutSite() {}
+        function aboutSite() {
+            $('#about-sample-obituary-notice-anchor').attr(
+                'href', `${apiRoot}/cemetery-registers/sample/obituary-notices/sample/sample/`
+            );
+        }
 
         function hashChange() {
             const config = {
