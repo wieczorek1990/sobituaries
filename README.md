@@ -104,3 +104,12 @@ chcon -Rt httpd_sys_content_t /srv/sobituaries/website/ /srv/sobituaries/sobitua
 chcon -Rt httpd_sys_content_t /etc/nginx/nginx.conf
 setsebool -P httpd_can_network_connect 1
 ```
+
+## Local tunnel
+
+```bash
+npm install -g localtunnel
+
+python3 -m http.server 8001
+sudo lt --port 8001
+```
