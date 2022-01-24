@@ -9,13 +9,14 @@
     first_name: Radosław
     last_name: Nowak
     years_lived: 82
-    holy_mass_datetime: 2022-01-20 12:00:00+00:00
+    holy_mass_datetime: 2032-01-20 12:00:00+00:00
     holy_mass_place: w kościele Św. Wawrzyńca w Pniewach
     rosary_time: '11:30:00'
     rosary_place: w kościele
     body_or_ashes: body
     funeral_place: na cmentarzu parafialnym
     slug: radosaw-nowak-mgrr
+    paid_on: 2022-01-20 12:00:00+00:00
 - model: api.obituarynotice
   pk: 2
   fields:
@@ -27,10 +28,11 @@
     first_name: Adam
     last_name: Nowak
     years_lived: 83
-    holy_mass_datetime: 2022-01-16 12:00:00+00:00
+    holy_mass_datetime: 2032-01-16 12:00:00+00:00
     holy_mass_place: w kościele Św. Wawrzyńca w Pniewach
     rosary_time: '11:30:00'
     rosary_place: w kaplicy
     body_or_ashes: ashes
     funeral_place: na cmentarzu parafialnym
     slug: adam-nowak-mofw
+    paid_on: 2022-01-16 12:00:00+00:00

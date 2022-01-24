@@ -44,11 +44,16 @@ jQuery(document).ready(function() {
             }
         }
 
-        function report(category, slug) {
+        function report(category, slug, id) {
             jQuery.post(`${apiRoot}/reports/`, {
                 'category': category,
                 'slug': slug,
-            })
+            }).done(function() {
+                $popup = jQuery(`#${id}`).unbind().click(function() {
+                    jQuery(this)[0].classList.toggle('show');
+                });
+                $popup.click();
+            });
         }
 
         function generateCemeteryRegister(element) {
@@ -183,7 +188,7 @@ jQuery(document).ready(function() {
                 });
             });
             jQuery('#cemetery-register-report-anchor').click(function() {
-                report('cemetery_register', slug);
+                report('cemetery_register', slug, 'cemetery-register-report-popup');
             });
         }
 

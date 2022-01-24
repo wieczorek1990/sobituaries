@@ -34,7 +34,7 @@
 {# https://theboroer.github.io/localtunnel-www/ #}
 <meta property="og:title" content="Nie żyje {{ obituary_notice.clean_name }}, lat {{ obituary_notice.years_lived }}" />
 <meta property="og:description" content="Kliknij, aby zobaczyć nekrolog." />
-<meta property="og:image" content="{{ static 'share.png' }}" />
+<meta property="og:image" content="{% static 'share.png' %}" />
 <meta property="og:image:alt" content="Nie żyje {{ obituary_notice.clean_name }}, lat {{ obituary_notice.years_lived }}. Kliknij, aby zobaczyć nekrolog." />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -75,8 +75,12 @@
         </div>
     </div>
     <p>Kopiuj link do schowka: <a id="link-copy-anchor" href="javascript:;">📋</a></p>
-    <p><a id="obituary-notice-report-anchor" href="javascript:;">Zgłoś nekrolog ❌</a></p>
-    <a href="{{ page_root }}#/cemetery-registers/{{ cemetery_register_slug }}/">⏎</a>
+    <div class="popup">
+        <a id="obituary-notice-report-anchor" href="javascript:;">Zgłoś nekrolog ❌</a>
+        <span class="popuptext" id="obituary-notice-report-popup">Zgłoszono!</span>
+    </div>
+    <br/>
+    <p><a href="{{ page_root }}#/cemetery-registers/{{ cemetery_register_slug }}/">⏎</a></p>
 </div>
 {% endwith %}
 {% endblock %}
@@ -100,16 +104,21 @@
         });
 
         let apiRoot = '{{ API_ROOT }}';
-        function report(category, slug) {
+        function report(category, slug, id) {
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             jQuery.post(`${apiRoot}/reports/`, {
                 'category': category,
                 'slug': slug,
                 'csrfmiddlewaretoken': csrftoken,
+            }).done(function() {
+                $popup = jQuery(`#${id}`).unbind().click(function() {
+                    jQuery(this)[0].classList.toggle('show');
+                });
+                $popup.click();
             }).fail(function(xhr){ console.log(xhr.responseJSON); });
         }
         jQuery('#obituary-notice-report-anchor').click(function() {
-            report('obituary_notice', '{{ obituary_notice_slug }}');
+            report('obituary_notice', '{{ obituary_notice_slug }}', 'obituary-notice-report-popup');
         });
     });
 </script>
