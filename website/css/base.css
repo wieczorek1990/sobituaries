@@ -36,9 +36,11 @@ input, textarea, select {
 #website-title {
     font-size: 3em;
 }
-#about-site {
-    max-width: 40%;
-    margin: 0 auto;
+@media (min-width: 992px) {
+    #about-site {
+        max-width: 40%;
+        margin: 0 auto;
+    }
 }
 
 /* Button ala Dribbble */

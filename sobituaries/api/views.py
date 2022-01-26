@@ -69,13 +69,13 @@ class SlugsMixin:
     def get_additional_context_data():
         return {'SAMPLE': False}
 
-    def _get_slugs(self):
+    def get_slugs(self):
         cemetery_register_slug = self.kwargs['cemetery_register_slug']
         obituary_notice_slug = self.kwargs['obituary_notice_slug']
         return cemetery_register_slug, obituary_notice_slug
 
-    def get_slugs(self):
-        cemetery_register_slug, obituary_notice_slug = self._get_slugs()
+    def get_objects(self):
+        cemetery_register_slug, obituary_notice_slug = self.get_slugs()
 
         cemetery_register = get_object_or_404(models.CemeteryRegister, slug=cemetery_register_slug)
         cemetery_register_id = cemetery_register.id
@@ -83,7 +83,7 @@ class SlugsMixin:
                                             cemetery_register=cemetery_register_id,
                                             slug=obituary_notice_slug)
 
-        return cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice
+        return cemetery_register, obituary_notice
 
 
 class SampleSlugsMixin:
@@ -91,8 +91,8 @@ class SampleSlugsMixin:
     def get_additional_context_data():
         return {'SAMPLE': True}
 
-    def get_slugs(self):
-        cemetery_register_slug, obituary_notice_slug = self._get_slugs()
+    def get_objects(self):
+        cemetery_register_slug, obituary_notice_slug = self.get_slugs()
 
         cemetery_register = models.CemeteryRegister(
             title='Przykładowy rejestr nekrologów',
@@ -115,7 +115,7 @@ class SampleSlugsMixin:
             slug=obituary_notice_slug,
         )
 
-        return cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice
+        return cemetery_register, obituary_notice
 
 
 class ObituaryNoticeTemplateView(SlugsMixin, generic.TemplateView):
@@ -124,17 +124,16 @@ class ObituaryNoticeTemplateView(SlugsMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
-        cemetery_register_slug, obituary_notice_slug, cemetery_register, obituary_notice = self.get_slugs()
+        cemetery_register, obituary_notice = self.get_objects()
 
         context.update({
-            'page_root': settings.PAGE_ROOT,
+            'API_ROOT': settings.API_ROOT,
+            'PAGE_ROOT': settings.PAGE_ROOT,
             'title': obituary_notice.clean_name(),
-            'cemetery_register_slug': cemetery_register_slug,
+            'cemetery_register': cemetery_register,
             'obituary_notice': obituary_notice,
-            'obituary_notice_slug': obituary_notice_slug,
             'BODY': models.ObituaryNotice.BodyOrAshes.BODY,
             'ASHES': models.ObituaryNotice.BodyOrAshes.ASHES,
-            'API_ROOT': settings.API_ROOT,
         })
         context.update(self.get_additional_context_data())
 
@@ -147,7 +146,7 @@ class ObituaryNoticeSampleTemplateView(SampleSlugsMixin, ObituaryNoticeTemplateV
 
 class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
-        cemetery_register_slug, obituary_notice_slug, _, obituary_notice = self.get_slugs()
+        cemetery_register, obituary_notice = self.get_objects()
 
         payment = models.ObituaryNoticePayment(obituary_notice=obituary_notice)
         payment.save()
@@ -165,8 +164,8 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
             }],
             mode='payment',
             success_url=(f'{settings.API_ROOT}/'
-                         f'cemetery-registers/{cemetery_register_slug}/'
-                         f'obituary-notices/{obituary_notice_slug}/'
+                         f'cemetery-registers/{cemetery_register.slug}/'
+                         f'obituary-notices/{obituary_notice.slug}/'
                          f'payments/success/{payment.token}/'),
             cancel_url=f'{settings.PAGE_ROOT}#/stripe/cancel',
         )
@@ -176,7 +175,7 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
 
 class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
-        cemetery_register_slug, obituary_notice_slug, _, obituary_notice = self.get_slugs()
+        _, obituary_notice = self.get_objects()
 
         token = self.kwargs['token']
         if obituary_notice.is_unpaid() and obituary_notice.token_matches(token):
@@ -185,7 +184,7 @@ class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
             return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/cancel/')
 
         return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/success/'
-                                         f'{cemetery_register_slug}/{obituary_notice_slug}/')
+                                         f'{cemetery_register_slug}/{obituary_notice.slug}/')
 
 
 class ReportCreateView(CsrfExemptMixin, generics.CreateAPIView):
