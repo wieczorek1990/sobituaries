@@ -1,13 +1,12 @@
-import mock
 from datetime import datetime
 
+import mock
 from django import test
 from django import urls
 from django.utils import timezone
 from rest_framework import status
 
 from api import models
-
 
 FAKE_DATETIME_NOW = timezone.now().replace(year=2022, month=1, day=17, hour=12, minute=0, second=0, microsecond=0)
 
@@ -146,6 +145,13 @@ class PaymentTestCase(SlugsMixin, test.TransactionTestCase):
         }))
         self.assertEqual(response.status_code, status.HTTP_303_SEE_OTHER)
         self.assertTrue(models.ObituaryNoticePayment.objects.filter(obituary_notice=obituary_notice).exists())
+
+        # Second hit to payment
+        response = self.client.get(urls.reverse('obituary-notice-stripe-payment', kwargs={
+            'cemetery_register_slug': self.cemetery_register_slug,
+            'obituary_notice_slug': self.obituary_notice_slug,
+        }))
+        self.assertEqual(response.status_code, status.HTTP_303_SEE_OTHER)
 
         # Bad token
         response = self.client.get(urls.reverse('obituary-notice-stripe-payment-success', kwargs={

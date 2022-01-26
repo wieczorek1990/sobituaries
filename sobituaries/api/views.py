@@ -2,15 +2,16 @@ from datetime import date, datetime, time
 
 import stripe
 from braces.views import CsrfExemptMixin
+from django import db
 from django import http
 from django.conf import settings
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views import generic
 from rest_framework import filters
 from rest_framework import generics
-from rest_framework import status
 from rest_framework import response
+from rest_framework import status
 from rest_framework import views
 
 from api import constants
@@ -157,7 +158,10 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         payment = models.ObituaryNoticePayment(obituary_notice=obituary_notice)
-        payment.save()
+        try:
+            payment.save()
+        except db.IntegrityError:
+            payment = models.ObituaryNoticePayment.objects.get(obituary_notice=obituary_notice)
 
         session = stripe.checkout.Session.create(
             line_items=[{
@@ -184,8 +188,8 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
 class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
         cemetery_register, obituary_notice = self.get_objects()
-
         token = self.kwargs['token']
+
         if obituary_notice.is_unpaid() and obituary_notice.token_matches(token):
             obituary_notice.mark_paid()
         else:
