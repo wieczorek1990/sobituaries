@@ -9,10 +9,13 @@ from django.utils import timezone
 from django.views import generic
 from rest_framework import filters
 from rest_framework import generics
+from rest_framework import status
+from rest_framework import response
 from rest_framework import views
 
 from api import constants
 from api import models
+from api import responses
 from api import serializers
 from api import utils
 
@@ -148,6 +151,11 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
         cemetery_register, obituary_notice = self.get_objects()
 
+        if obituary_notice.is_paid():
+            return response.Response(data={
+                'obituary_notice': ['Obituary notice is already paid.'],
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         payment = models.ObituaryNoticePayment(obituary_notice=obituary_notice)
         payment.save()
 
@@ -170,12 +178,12 @@ class ObituaryNoticePaymentView(SlugsMixin, views.APIView):
             cancel_url=f'{settings.PAGE_ROOT}#/stripe/cancel',
         )
 
-        return redirect(session.url, code=303)
+        return responses.HttpResponseSeeOther(session.url)
 
 
 class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
     def get(self, request, *args, **kwargs):
-        _, obituary_notice = self.get_objects()
+        cemetery_register, obituary_notice = self.get_objects()
 
         token = self.kwargs['token']
         if obituary_notice.is_unpaid() and obituary_notice.token_matches(token):
@@ -184,7 +192,7 @@ class ObituaryNoticePaymentSuccessView(SlugsMixin, views.APIView):
             return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/cancel/')
 
         return http.HttpResponseRedirect(f'{settings.PAGE_ROOT}#/stripe/success/'
-                                         f'{cemetery_register_slug}/{obituary_notice.slug}/')
+                                         f'{cemetery_register.slug}/{obituary_notice.slug}/')
 
 
 class ReportCreateView(CsrfExemptMixin, generics.CreateAPIView):

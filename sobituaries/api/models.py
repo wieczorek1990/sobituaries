@@ -67,6 +67,9 @@ class ObituaryNotice(django_extensions_models.TimeStampedModel):
     def is_unpaid(self):
         return self.paid_on is None
 
+    def is_paid(self):
+        return self.paid_on is not None
+
     def token_matches(self, token):
         return self.payment.token == token
 

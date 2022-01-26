@@ -1,4 +1,5 @@
 import mock
+from datetime import datetime
 
 from django import test
 from django import urls
@@ -43,21 +44,26 @@ class CemeteryRegisterTestCase(test.TransactionTestCase):
         self.assertEqual(response.data['slug'], slug)
 
 
+class SlugsMixin:
+    def setUp(self):
+        self.cemetery_register_slug = 'parafia-sw-wawrzynca'
+        self.obituary_notice_slug = 'radosaw-nowak-mgrr'
+
+
 @mock.patch('django.utils.timezone.now', return_value=FAKE_DATETIME_NOW)
-class ObituaryNoticeTestCase(test.TransactionTestCase):
+class ObituaryNoticeTestCase(SlugsMixin, test.TransactionTestCase):
     fixtures = ('CemeteryRegister', 'ObituaryNotice')
 
     def setUp(self):
-        self.cemetery_register_slug = 'parafia-sw-wawrzynca'
+        super().setUp()
         self.cemetery_register = models.CemeteryRegister.objects.get(slug=self.cemetery_register_slug)
-        self.obituary_notice_slug = 'radosaw-nowak-mgrr'
 
     def test_list(self, mock_now):
         response = self.client.get(urls.reverse('obituary-notices', kwargs={
             'slug': self.cemetery_register_slug,
         }))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(response.data['count'], 2)
 
     def test_create(self, mock_now):
         self.assertEqual(models.ObituaryNotice.objects.count(), 2)
@@ -87,3 +93,86 @@ class ObituaryNoticeTestCase(test.TransactionTestCase):
             'obituary_notice_slug': self.obituary_notice_slug,
         }))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_sample(self, mock_now):
+        response = self.client.get(urls.reverse('obituary-notice-retrieve-sample', kwargs={
+            'cemetery_register_slug': 'sample',
+            'obituary_notice_slug': 'sample',
+        }))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class ReportTestCase(SlugsMixin, test.TransactionTestCase):
+    fixtures = ('CemeteryRegister', 'ObituaryNotice')
+
+    def test_create(self):
+        self.assertEqual(models.Report.objects.count(), 0)
+        response = self.client.post(urls.reverse('report-create'), data={
+            'category': models.Report.Category.CEMETERY_REGISTER,
+            'slug': self.cemetery_register_slug,
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(models.Report.objects.count(), 1)
+        response = self.client.post(urls.reverse('report-create'), data={
+            'category': models.Report.Category.OBITUARY_NOTICE,
+            'slug': self.obituary_notice_slug,
+        })
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(models.Report.objects.count(), 2)
+
+
+class PaymentTestCase(SlugsMixin, test.TransactionTestCase):
+    fixtures = ('CemeteryRegister', 'ObituaryNotice')
+
+    @staticmethod
+    def assertEndswith(hay, needle):
+        return hay.endswith(needle)
+
+    def test_payment(self):
+        # Already paid
+        response = self.client.get(urls.reverse('obituary-notice-stripe-payment', kwargs={
+            'cemetery_register_slug': self.cemetery_register_slug,
+            'obituary_notice_slug': self.obituary_notice_slug,
+        }))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Mark as unpaid and create payment
+        obituary_notice = models.ObituaryNotice.objects.get(slug=self.obituary_notice_slug)
+        obituary_notice.paid_on = None
+        obituary_notice.save()
+        response = self.client.get(urls.reverse('obituary-notice-stripe-payment', kwargs={
+            'cemetery_register_slug': self.cemetery_register_slug,
+            'obituary_notice_slug': self.obituary_notice_slug,
+        }))
+        self.assertEqual(response.status_code, status.HTTP_303_SEE_OTHER)
+        self.assertTrue(models.ObituaryNoticePayment.objects.filter(obituary_notice=obituary_notice).exists())
+
+        # Bad token
+        response = self.client.get(urls.reverse('obituary-notice-stripe-payment-success', kwargs={
+            'cemetery_register_slug': self.cemetery_register_slug,
+            'obituary_notice_slug': self.obituary_notice_slug,
+            'token': 'bad_token',
+        }))
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEndswith(response.url, '#/stripe/cancel/')
+
+        # Correct token and unpaid
+        payment = models.ObituaryNoticePayment.objects.get(obituary_notice=obituary_notice)
+        response = self.client.get(urls.reverse('obituary-notice-stripe-payment-success', kwargs={
+            'cemetery_register_slug': self.cemetery_register_slug,
+            'obituary_notice_slug': self.obituary_notice_slug,
+            'token': payment.token,
+        }))
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEndswith(response.url, '#/stripe/success/')
+        obituary_notice.refresh_from_db()
+        self.assertIsInstance(obituary_notice.paid_on, datetime)
+
+        # Correct token and paid
+        response = self.client.get(urls.reverse('obituary-notice-stripe-payment-success', kwargs={
+            'cemetery_register_slug': self.cemetery_register_slug,
+            'obituary_notice_slug': self.obituary_notice_slug,
+            'token': payment.token,
+        }))
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEndswith(response.url, '#/stripe/cancel/')
