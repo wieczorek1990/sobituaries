@@ -5,6 +5,12 @@
 Create `/envs/` directory using `/envs.example/` as template.
 
 ```bash
+cp -r envs.example envs
+```
+
+Edit envs.
+
+```bash
 # django
 DJANGO_DEBUG # 0 or 1 for disabled/enabled
 DJANGO_SECRET_KEY # 50 characters

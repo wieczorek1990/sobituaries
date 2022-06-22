@@ -16,7 +16,7 @@ from pathlib import Path
 import dj_database_url
 import sentry_sdk
 import stripe
-from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations import django
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,6 +34,7 @@ DEBUG = bool(int(os.environ.get('DJANGO_DEBUG')))
 
 ALLOWED_HOSTS = ['localhost', 'backend', 'nekrologi.soiree.tech']
 CSRF_TRUSTED_ORIGINS = ['https://nekrologi.soiree.tech']
+CORS_ALLOWED_ORIGINS = ['http://localhost:8888']
 
 
 # Application definition
@@ -157,13 +158,6 @@ REST_FRAMEWORK = {
 }
 
 
-# CORS
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8888',
-]
-
-
 # Routing back links
 
 if not DEBUG:
@@ -190,7 +184,7 @@ stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
 sentry_sdk.init(
     "https://0e9a3858fdff4ef59523470ba780fb0a@o1123187.ingest.sentry.io/6160853",
-    integrations=[DjangoIntegration()],
+    integrations=[django.DjangoIntegration()],
     traces_sample_rate=1.0,
     send_default_pii=False,
 )

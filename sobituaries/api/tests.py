@@ -1,6 +1,6 @@
 from datetime import datetime
+from unittest import mock
 
-import mock
 from django import test
 from django import urls
 from django.utils import timezone
